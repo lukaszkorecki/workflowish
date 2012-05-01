@@ -53,8 +53,30 @@ describe 'workflowish#convert_from_workflowy'
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
+    \	'    This is a note',
+    \ ], "\<Return>")
+
+    call workflowish#convert_from_workflowy()
+
+    Expect getline(1, '$') ==# [
+    \	'* Fix some bugs',
+    \	'  * Backspace is annoying',
+    \	'    \ This is a note',
+    \ ]
+
+    call s:after()
+  end
+
+  it 'should convert multiple notes'
+    call s:before()
+
+    execute 'normal' 'i' . join([
+    \	'- Fix some bugs',
+    \	'  - Backspace is annoying',
     \	'    This is a note with',
-    \	'    multiple lines',
+    \	'    multiple comments',
+    \	'    spanning 4',
+    \	'    lines',
     \ ], "\<Return>")
 
     call workflowish#convert_from_workflowy()
@@ -63,14 +85,15 @@ describe 'workflowish#convert_from_workflowy'
     \	'* Fix some bugs',
     \	'  * Backspace is annoying',
     \	'    \ This is a note with',
-    \	'    \ multiple lines',
+    \	'    \ multiple comments',
+    \	'    \ spanning 4',
+    \	'    \ lines',
     \ ]
 
     call s:after()
   end
 
   it 'should convert notes with indentation'
-    SKIP 'TODO: the indentation in the middle note line gets eaten'
     call s:before()
 
     execute 'normal' 'i' . join([
@@ -85,7 +108,7 @@ describe 'workflowish#convert_from_workflowy'
 
     Expect getline(1, '$') ==# [
     \	'* Fix some bugs',
-    \	'  - This function is broken',
+    \	'  * This function is broken',
     \	'    \ def add(a, b)',
     \	'    \   a * b',
     \	'    \ end',
