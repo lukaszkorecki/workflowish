@@ -74,7 +74,7 @@ describe 'workflowish#convert_from_workflowy'
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
     \	'    This is a note with',
-    \	'    multiple comments',
+    \	'    multiple notes',
     \	'    spanning 4',
     \	'    lines',
     \ ], "\<Return>")
@@ -85,7 +85,7 @@ describe 'workflowish#convert_from_workflowy'
     \	'* Fix some bugs',
     \	'  * Backspace is annoying',
     \	'    \ This is a note with',
-    \	'    \ multiple comments',
+    \	'    \ multiple notes',
     \	'    \ spanning 4',
     \	'    \ lines',
     \ ]
@@ -111,6 +111,32 @@ describe 'workflowish#convert_from_workflowy'
     \	'  * This function is broken',
     \	'    \ def add(a, b)',
     \	'    \   a * b',
+    \	'    \ end',
+    \ ]
+
+    call s:after()
+  end
+
+  it 'should convert notes with only whitespace'
+    call s:before()
+
+    execute 'normal' 'i' . join([
+    \	'- Fix some bugs',
+    \	'  - This function has a whitespace note',
+    \	'    ',
+    \	'    def add(a, b)',
+    \	'    ',
+    \	'    end',
+    \ ], "\<Return>")
+
+    call workflowish#convert_from_workflowy()
+
+    Expect getline(1, '$') ==# [
+    \	'* Fix some bugs',
+    \	'  * This function has a whitespace note',
+    \	'    \ ',
+    \	'    \ def add(a, b)',
+    \	'    \ ',
     \	'    \ end',
     \ ]
 
