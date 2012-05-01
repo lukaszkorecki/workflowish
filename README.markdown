@@ -43,6 +43,8 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
 - todos:
   - a todo which is not completed is a line which starts with `*`
   - completed todo starts with a `-`
+- convert from workflowy plain text export
+  - in a `.wofl` file or after `:set ft=workflowish`, run `:call workflowish#convert_from_workflowy()` to convert the whole buffer
 
 Thanks to the long running tradition, *workflowish* files have `.wofl` extension.
 
