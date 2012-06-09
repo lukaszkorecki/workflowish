@@ -17,11 +17,20 @@ setlocal autoindent
 if !exists("g:workflowish_experimental_horizontal_focus")
   let g:workflowish_experimental_horizontal_focus = 0
 endif
+
+if !exists("g:workflowish_disable_zq_warning")
+  let g:workflowish_disable_zq_warning = 0
+endif
+
 "}}}
 " Keybindings {{{
 
 nnoremap <buffer> zq :call WorkflowishFocusToggle(line("."))<cr>
 nnoremap <buffer> zp :call WorkflowishFocusPrevious()<cr>
+
+if g:workflowish_disable_zq_warning == 0
+  nnoremap <buffer> ZQ :call WorkflowishZQWarningMessage()<cr>
+endif
 
 "}}}
 " Missing framework functions {{{
@@ -49,6 +58,12 @@ endfunction
 
 "}}}
 " Workflowish utility functions {{{
+
+function! WorkflowishZQWarningMessage()
+  echohl WarningMsg
+  echo "ZQ is not zq. Did you leave caps lock on? Put this in config to disable this message: let g:workflowish_disable_zq_warning = 1"
+  echohl None
+endfunction
 
 function! s:CleanLineForBreadcrumb(lnum)
   return s:StripEnd(substitute(getline(a:lnum), "\\v^( *)(\\\\|\\*|\\-) ", "", ""))
