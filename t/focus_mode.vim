@@ -2,7 +2,6 @@ runtime! ftplugin/workflowish.vim
 
 describe 'in focus mode'
 
-  " TODO: scope, when focus is set on line 5
   function! s:before()
     new
     setfiletype=workflowish

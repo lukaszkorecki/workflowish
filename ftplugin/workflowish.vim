@@ -84,25 +84,39 @@ endfunction
 " Couldn't find any other 'sane' way to initialize window variables
 
 function! s:GetFocusOn()
-    if !exists("w:workflowish_focus_on")
-      let w:workflowish_focus_on = 0
-    endif
-    return w:workflowish_focus_on
+  if !exists("w:workflowish_focus_on")
+    let w:workflowish_focus_on = 0
+  endif
+  return w:workflowish_focus_on
 endfunction
 
 function! s:SetFocusOn(lnum)
   let w:workflowish_focus_on = a:lnum
 endfunction
 
-function! s:GetFocusOnEnd()
-    if !exists("w:workflowish_focus_on_end")
-      let w:workflowish_focus_on_end = 0
-    endif
-    return w:workflowish_focus_on_end
+" Yes it looks horrible, and it is.
+" This will be checked row for row, i.e. 1,2,3,4,5,6,7,8 and then maybe 4,5,6,7,8 and
+" 4,5 which will trigger a recompute 3 times for row 1, 4 and 4 again using
+" the cache the other times.
+function! s:GetFocusOnEnd(lnum)
+  if !exists("w:workflowish_focus_on_end")
+    let w:workflowish_focus_on_end = 0
+  endif
+  if !exists("w:workflowish_focus_on_end_last_accessed_row")
+    let w:workflowish_focus_on_end_last_accessed_row = 0
+  endif
+  if s:GetFocusOn() > 0
+    if w:workflowish_focus_on_end_last_accessed_row != a:lnum-1
+      call s:RecomputeFocusOnEnd()
+    end
+  else
+    let w:workflowish_focus_on_end = 0
+  end
+  let w:workflowish_focus_on_end_last_accessed_row = a:lnum
+  return w:workflowish_focus_on_end
 endfunction
 
 " This method is quite slow in big files
-" TODO: it may be this cache that destroys "new line right before last fold"
 function! s:RecomputeFocusOnEnd()
   let lfrom = s:GetFocusOn()
   if lfrom > 0
@@ -110,9 +124,9 @@ function! s:RecomputeFocusOnEnd()
 
     let w:workflowish_focus_on_end = 0
     for line in range(lfrom+1, line('$'))
-      if indent(line) <= foldindent
-	let w:workflowish_focus_on_end = line-1
-	break
+      if indent(line) <= foldindent && getline(line) !~ "^\\s*$"
+        let w:workflowish_focus_on_end = line-1
+        break
       endif
     endfor
   else
@@ -130,9 +144,9 @@ function! WorkflowishCompactFoldLevel(lnum)
     if a:lnum == 1
       call s:RecomputeFocusOnEnd()
     end
-    if a:lnum ==# 1 || a:lnum ==# s:GetFocusOnEnd() + 1
+    if a:lnum ==# 1 || a:lnum ==# s:GetFocusOnEnd(a:lnum) + 1
       return '>1'
-    elseif (a:lnum ># 1 && a:lnum <# s:GetFocusOn()) || a:lnum > s:GetFocusOnEnd() + 1
+    elseif (a:lnum ># 1 && a:lnum <# s:GetFocusOn()) || a:lnum > s:GetFocusOnEnd(a:lnum) + 1
       return 1
     else
       return s:ComputeFoldLevel(a:lnum, indent(s:GetFocusOn()) * -1)
@@ -166,7 +180,7 @@ function! WorkflowishFoldText()
     let lines = v:foldend - v:foldstart
     let firstline = getline(v:foldstart)
     let textend = '|' . lines . '| '
-    
+
     if g:workflowish_experimental_horizontal_focus == 1 && s:GetFocusOn() > 0
       let firstline = substitute(firstline, "\\v^ {".w:workflowish_focus_indent."}", "", "")
     end
@@ -216,11 +230,11 @@ function! WorkflowishFocusOn(lnum)
 endfunction
 
 function! WorkflowishFocusOff()
-    call s:SetFocusOn(0)
-    if g:workflowish_experimental_horizontal_focus == 1
-      setlocal wrap
-    end
-    normal zx
+  call s:SetFocusOn(0)
+  if g:workflowish_experimental_horizontal_focus == 1
+    setlocal wrap
+  end
+  normal zx
 endfunction
 
 function! WorkflowishFocusPrevious()
@@ -252,3 +266,4 @@ endfunction
 
 "}}}
 
+" vim:set fdm=marker sw=2 sts=2 et:
