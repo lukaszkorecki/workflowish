@@ -49,7 +49,7 @@ end
 
 function! s:WindowWidth()
   " TODO: signcolumn takes up 2 columns, hardcoded
-  return winwidth(0) - &fdc + &number*&numberwidth - 2
+  return winwidth(0) - &fdc - &number*&numberwidth - 2
 endfunction
 
 function! s:StripEnd(str)
