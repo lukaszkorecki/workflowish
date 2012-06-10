@@ -98,38 +98,43 @@ endfunction
 " This will be checked row for row, i.e. 1,2,3,4,5,6,7,8 and then maybe 4,5,6,7,8 and
 " 4,5 which will trigger a recompute 3 times for row 1, 4 and 4 again using
 " the cache the other times.
-function! s:GetFocusOnEnd(lnum)
+function! s:GetFocusOnEnd(lnum, focusOn)
   if !exists("w:workflowish_focus_on_end")
     let w:workflowish_focus_on_end = 0
   endif
   if !exists("w:workflowish_focus_on_end_last_accessed_row")
     let w:workflowish_focus_on_end_last_accessed_row = 0
   endif
-  if s:GetFocusOn() > 0
-    if w:workflowish_focus_on_end_last_accessed_row != a:lnum-1
-      call s:RecomputeFocusOnEnd()
+  if a:focusOn > 0
+    if w:workflowish_focus_on_end_last_accessed_row == a:lnum
+      " take it easy
+    elseif w:workflowish_focus_on_end_last_accessed_row == a:lnum-1
+      let w:workflowish_focus_on_end_last_accessed_row = a:lnum
+    else
+      let w:workflowish_focus_on_end_last_accessed_row = a:lnum
+      call s:RecomputeFocusOnEnd(a:focusOn)
     end
   else
     let w:workflowish_focus_on_end = 0
   end
-  let w:workflowish_focus_on_end_last_accessed_row = a:lnum
   return w:workflowish_focus_on_end
 endfunction
 
 " This method is quite slow in big files
-function! s:RecomputeFocusOnEnd()
-  let lfrom = s:GetFocusOn()
+function! s:RecomputeFocusOnEnd(lfrom)
   let lend = line('$')
-  if lfrom > 0
-    let foldindent = indent(lfrom)
+  if a:lfrom > 0
+    let foldindent = indent(a:lfrom)
 
     let w:workflowish_focus_on_end = lend
-    for line in range(lfrom+1, lend)
-      if indent(line) <= foldindent && getline(line) !~ "^\\s*$"
-        let w:workflowish_focus_on_end = line-1
+    let lnum = a:lfrom+1
+    while lnum < lend
+      if indent(lnum) <= foldindent && getline(lnum) !~ "^\\s*$"
+        let w:workflowish_focus_on_end = lnum-1
         break
       endif
-    endfor
+      let lnum = lnum + 1
+    endwhile
   else
     let w:workflowish_focus_on_end = 0
   endif
@@ -141,16 +146,17 @@ endfunction
 
 " This feature hides all nested lines under the main one, like workflowy.
 function! WorkflowishCompactFoldLevel(lnum)
-  if s:GetFocusOn() > 0
+  let focusOn = s:GetFocusOn()
+  if l:focusOn > 0
     if a:lnum == 1
-      call s:RecomputeFocusOnEnd()
+      call s:RecomputeFocusOnEnd(l:focusOn)
     end
-    if a:lnum ==# 1 || a:lnum ==# s:GetFocusOnEnd(a:lnum) + 1
+    if a:lnum ==# 1 || a:lnum ==# s:GetFocusOnEnd(a:lnum, l:focusOn) + 1
       return '>1'
-    elseif (a:lnum ># 1 && a:lnum <# s:GetFocusOn()) || a:lnum > s:GetFocusOnEnd(a:lnum) + 1
+    elseif (a:lnum ># 1 && a:lnum <# l:focusOn) || a:lnum > s:GetFocusOnEnd(a:lnum, l:focusOn) + 1
       return 1
     else
-      return s:ComputeFoldLevel(a:lnum, indent(s:GetFocusOn()) * -1)
+      return s:ComputeFoldLevel(a:lnum, indent(l:focusOn) * -1)
     endif
   else
     return s:ComputeFoldLevel(a:lnum, 0)
@@ -171,7 +177,8 @@ function! s:ComputeFoldLevel(lnum, indent_offset)
 endfunction
 
 function! WorkflowishFoldText()
-  if s:GetFocusOn() > 0 && !(v:foldstart >= s:GetFocusOn() && v:foldstart <= s:RecomputeFocusOnEnd())
+  let focusOn = s:GetFocusOn()
+  if l:focusOn > 0 && !(v:foldstart >= l:focusOn && v:foldstart <= s:RecomputeFocusOnEnd(l:focusOn))
     if v:foldstart ==# 1
       return WorkflowishBreadcrumbs(v:foldstart, v:foldend)
     else
