@@ -119,11 +119,12 @@ endfunction
 " This method is quite slow in big files
 function! s:RecomputeFocusOnEnd()
   let lfrom = s:GetFocusOn()
+  let lend = line('$')
   if lfrom > 0
     let foldindent = indent(lfrom)
 
-    let w:workflowish_focus_on_end = 0
-    for line in range(lfrom+1, line('$'))
+    let w:workflowish_focus_on_end = lend
+    for line in range(lfrom+1, lend)
       if indent(line) <= foldindent && getline(line) !~ "^\\s*$"
         let w:workflowish_focus_on_end = line-1
         break
@@ -199,6 +200,9 @@ function! WorkflowishBreadcrumbs(lstart, lend)
     end
   endfor
   let breadtrace = substitute(breadtrace, " > $", "", "")
+  if breadtrace == ""
+    let breadtrace = "Root"
+  endif
   return breadtrace . repeat(" ", s:WindowWidth()-s:StringWidth(breadtrace))
 endfunction
 "}}}
@@ -225,8 +229,10 @@ function! WorkflowishFocusOn(lnum)
   if a:lnum != 1
     normal 1Gzc
   endif
-  normal Gzc
-  execute "normal" a:lnum . "G"
+  if a:lnum != line('$')
+    normal Gzc
+  end
+  execute "normal" a:lnum . "Gzv"
 endfunction
 
 function! WorkflowishFocusOff()
