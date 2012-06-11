@@ -224,6 +224,9 @@ function! WorkflowishFocusToggle(lnum)
 endfunction
 
 function! WorkflowishFocusOn(lnum)
+  if a:lnum == 0
+    return WorkflowishFocusOff()
+  end
   call s:SetFocusOn(a:lnum)
   if g:workflowish_experimental_horizontal_focus == 1
     let w:workflowish_focus_indent = indent(a:lnum)
