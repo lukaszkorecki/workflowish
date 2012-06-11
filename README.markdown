@@ -37,7 +37,9 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
 
 - searching (duh, it's, like, in Vim, broseph)
 - deleting (as above)
-- folding as a substitute for great `zoom` feature
+- folding and a `zoom/focus` mode
+  - `zq` to focus on current item / toggle off
+  - `zp` move focus to parent item
 - notes (just add `\` in the beginning of the line to start a comment)
 - [vimgrep](http://vimdoc.sourceforge.net/htmldoc/quickfix.html#:vimgrep) for filtering lines
 - todos:
@@ -45,6 +47,7 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
   - completed todo starts with a `-`
 - convert from workflowy plain text export
   - in a `.wofl` file or after `:set ft=workflowish`, run `:call workflowish#convert_from_workflowy()` to convert the whole buffer
+- split windows in vim makes it easy to organize big lists
 
 Thanks to the long running tradition, *workflowish* files have `.wofl` extension.
 
