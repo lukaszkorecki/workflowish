@@ -1,5 +1,7 @@
 # Workflowish
 
+[![Build Status](https://travis-ci.org/flugsio/workflowish.png)](https://travis-ci.org/flugsio/workflowish)
+
 Simple TODO manager/plugin/whatever for Vim, inspired by [Workflowy.com](https://workflowy.com/)
 
 ## Screenshot
