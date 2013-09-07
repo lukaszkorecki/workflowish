@@ -2,18 +2,16 @@ runtime! ftplugin/workflowish.vim
 
 describe 'compact folds'
 
-  function! s:before()
+  before
     new
     setfiletype=workflowish
-  endfunction
+  end
 
-  function! s:after()
+  after
     close!
-  endfunction
+  end
 
   it 'should set the header-line to startlevel of its children'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'* Project1',
     \	'  * check Google Tasks',
@@ -39,8 +37,6 @@ describe 'compact folds'
     Expect WorkflowishCompactFoldLevel(9)  ==# 1
     Expect WorkflowishCompactFoldLevel(10) ==# '>2'
     Expect WorkflowishCompactFoldLevel(11) ==# 2
-
-    call s:after()
   end
 
 end

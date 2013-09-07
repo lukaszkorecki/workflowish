@@ -2,18 +2,16 @@ runtime! ftplugin/workflowish.vim
 
 describe 'workflowish#convert_from_workflowy'
 
-  function! s:before()
+  before
     new
     setfiletype=workflowish
-  endfunction
+  end
 
-  function! s:after()
+  after
     close!
-  endfunction
+  end
 
   it 'should convert standard indented lists'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
@@ -25,13 +23,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'* Fix some bugs',
     \	'  * Backspace is annoying',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert completed items'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- [COMPLETE] Fix some bugs',
     \	'  - [COMPLETE] Backspace is annoying',
@@ -43,13 +37,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert notes'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
@@ -63,13 +53,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'  * Backspace is annoying',
     \	'    \ This is a note',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert multiple notes'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
@@ -89,13 +75,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'    \ spanning 4',
     \	'    \ lines',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert notes with indentation'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - This function is broken',
@@ -113,13 +95,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'    \   a * b',
     \	'    \ end',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert notes with only whitespace'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - This function has a whitespace note',
@@ -139,13 +117,9 @@ describe 'workflowish#convert_from_workflowy'
     \	'    \ ',
     \	'    \ end',
     \ ]
-
-    call s:after()
   end
 
   it 'should convert crazy structure'
-    call s:before()
-
     execute 'normal' 'i' . join([
     \	'- Fix some bugs',
     \	'  - Backspace is annoying',
@@ -179,8 +153,6 @@ describe 'workflowish#convert_from_workflowy'
     \	'   \ Nothing to worry about',
     \	'   \ hehe...',
     \ ]
-
-    call s:after()
   end
 
 end
