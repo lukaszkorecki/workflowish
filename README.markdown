@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/flugsio/workflowish.png)](https://travis-ci.org/flugsio/workflowish)
 
-Simple TODO manager/plugin/whatever for Vim, inspired by [Workflowy.com](https://workflowy.com/)
+Simple TODO list plugin for Vim, inspired by [Workflowy.com](https://workflowy.com/)
 
 ## Screenshot
 
@@ -37,7 +37,7 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
 
 ### Features?
 
-- searching (duh, it's, like, in Vim, broseph)
+- searching (Vim is pretty good at it)
 - deleting (as above)
 - folding and a `zoom/focus` mode
   - `zq` to focus on current item / toggle off
@@ -59,4 +59,7 @@ Thanks to the long running tradition, *workflowish* files have `.wofl` extension
 
 # Legal
 
-[WTFPL](http://sam.zoy.org/wtfpl/), but please tell me if you're doing anything with it, k?
+MIT  (c) Workflowish Team
+
+    15	Jimmie Elvenmark
+     7	Łukasz Korecki
