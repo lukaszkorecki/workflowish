@@ -55,11 +55,7 @@ Thanks to the long running tradition, *workflowish* files have `.wofl` extension
 
 ## Installing
 
-[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen)
-
-# Installation
-
-Install with pathogen
+[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen). (New to Pathogen? It's easy. You "install a plugin" by putting its files in a directory. i.e. `cd ~/.vim/bundle && git clone https://github.com/lukaszkorecki/workflowish` but please, [read the Pathogen README](https://github.com/tpope/vim-pathogen).)
 
 ## Optional configuration tweak
 
