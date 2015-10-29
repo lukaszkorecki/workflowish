@@ -62,8 +62,8 @@ Thanks to the long running tradition, *workflowish* files have `.wofl` extension
 This is not necessary for most users, but if you're a perfectionist you can do it. Add this to your .vimrc to fix [an edge-case with folding single-items](https://github.com/lukaszkorecki/workflowish/issues/5):
 
 ```
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+autocmd BufWinLeave *.wofl mkview
+autocmd BufWinEnter *.wofl silent loadview
 ```
 
 # Legal
