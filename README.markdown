@@ -42,6 +42,7 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
 - folding and a `zoom/focus` mode
   - `zq` to focus on current item / toggle off
   - `zp` move focus to parent item
+  - `za` toggles folding. See [Vim wiki: Folding](http://vim.wikia.com/wiki/Folding#Opening_and_closing_folds)
 - notes (just add `\` in the beginning of the line to start a comment)
 - [vimgrep](http://vimdoc.sourceforge.net/htmldoc/quickfix.html#:vimgrep) for filtering lines
 - todos:
