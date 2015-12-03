@@ -56,7 +56,9 @@ Thanks to the long running tradition, *workflowish* files have `.wofl` extension
 
 ## Installing
 
-[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen). (New to Pathogen? It's easy. You "install a plugin" by putting its files in a directory. i.e. `cd ~/.vim/bundle && git clone https://github.com/lukaszkorecki/workflowish` but please, [read the Pathogen README](https://github.com/tpope/vim-pathogen).)
+[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen).
+
+> New to Pathogen? It's easy. You "install a plugin" by putting its files in a directory. i.e. `cd ~/.vim/bundle && git clone https://github.com/lukaszkorecki/workflowish` but please, [read the Pathogen README](https://github.com/tpope/vim-pathogen).)
 
 ## Optional configuration tweak
 
@@ -71,5 +73,8 @@ autocmd BufWinEnter *.wofl silent loadview
 
 MIT  (c) Workflowish Team
 
-    15	Jimmie Elvenmark
-     7	Łukasz Korecki
+## Maintainers
+
+   15 Jimmie Elvenmark
+   10 Łukasz Korecki
+    4 hangtwentyy
